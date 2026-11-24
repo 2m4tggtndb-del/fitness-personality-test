@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>健身人格测试</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Archivo:wght@800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F4F5EF; --surface:#FFFFFF; --surface2:#EEF1E4; --ink:#171A15; --muted:#5C6558;
+    --line:#DEE2D2; --accent:#5A8F06; --accent-ink:#FFFFFF; --volt:#DCEF9A; --volt-ink:#2E3D08;
+    --coral:#E85D1A; --coral-bg:#FDEEE6; --bar-bg:#E6E9DA;
+    --radius:20px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#11140F; --surface:#1B1F18; --surface2:#242A20; --ink:#F0F2E8; --muted:#A8B09E;
+      --line:#323A2C; --accent:#A3C93A; --accent-ink:#171D08; --volt:#2E3D12; --volt-ink:#DCEF9A;
+      --coral:#FF8A50; --coral-bg:#382015; --bar-bg:#2A3024;
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Noto Sans SC",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.6;
+    background-image:radial-gradient(var(--line) 1px, transparent 1px); background-size:22px 22px;
+  }
+  button{font-family:inherit; cursor:pointer; min-height:44px}
+  .wrap{max-width:700px;margin:0 auto;padding:20px 18px 48px}
+  .hidden{display:none !important}
+
+  /* ---------- Start ---------- */
+  .badge{display:inline-flex;align-items:center;gap:8px;background:var(--volt);color:var(--volt-ink);font-weight:700;font-size:13px;padding:7px 12px;border-radius:999px}
+  .badge i{width:8px;height:8px;border-radius:50%;background:var(--coral);display:inline-block}
+  h1{font-size:38px;line-height:1.15;margin:18px 0 12px;font-weight:900;letter-spacing:-.02em}
+  h1 .hl{box-shadow:inset 0 -14px 0 var(--volt)}
+  .lead{color:var(--muted);font-size:16px;margin:0 0 20px;max-width:56ch}
+  .dims{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+  @media(max-width:520px){.dims{grid-template-columns:1fr} h1{font-size:32px}}
+  .dim{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .dim b{font-size:15px}
+  .dim span{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+  .dim .letters{font-family:Archivo,sans-serif;font-weight:900;color:var(--accent);letter-spacing:.08em}
+  .cta{
+    width:100%;border:0;border-radius:14px;background:var(--accent);color:var(--accent-ink);
+    font-size:18px;font-weight:900;padding:16px 20px;margin-top:8px;
+  }
+  .cta:active{transform:scale(.99)}
+  .meta{ text-align:center;color:var(--muted);font-size:13px;margin-top:10px}
+  .examples{margin-top:28px}
+  .examples h2{font-size:17px;margin:0 0 10px}
+  .ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:520px){.ex-grid{grid-template-columns:1fr}}
+  .ex{background:var(--surface2);border-radius:14px;padding:13px 15px}
+  .ex .code{font-family:Archivo,sans-serif;font-weight:900;letter-spacing:.1em;font-size:13px;color:var(--coral)}
+  .ex b{display:block;font-size:15px}
+  .ex span{color:var(--muted);font-size:13px}
+
+  /* ---------- Quiz ---------- */
+  .qtop{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--muted);font-weight:700}
+  .progress{height:10px;background:var(--bar-bg);border-radius:999px;overflow:hidden;margin:10px 0 26px}
+  .progress i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .35s ease;width:0}
+  @media (prefers-reduced-motion: reduce){ .progress i{transition:none} }
+  .qcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px 20px 20px}
+  .qdim{font-size:12.5px;font-weight:800;letter-spacing:.12em;color:var(--coral);text-transform:uppercase}
+  .qtext{font-size:22px;font-weight:900;line-height:1.4;margin:8px 0 20px}
+  .opts{display:grid;gap:12px}
+  .opt{
+    text-align:left;width:100%;border:2px solid var(--line);background:var(--surface);color:var(--ink);
+    border-radius:16px;padding:16px 16px;display:flex;gap:14px;align-items:flex-start;font-size:16px;line-height:1.5;
+  }
+  .opt:hover{border-color:var(--accent)}
+  .opt .ab{
+    flex:0 0 auto;width:32px;height:32px;border-radius:50%;background:var(--surface2);
+    display:flex;align-items:center;justify-content:center;font-family:Archivo,sans-serif;font-weight:900;font-size:14px;margin-top:1px;
+  }
+  .opt.picked{border-color:var(--accent);background:var(--surface2)}
+  .qnav{display:flex;gap:10px;margin-top:16px}
+  .ghost{flex:1;background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:12px;font-size:15px;font-weight:700;padding:12px}
+  .ghost:disabled{opacity:.4;cursor:default}
+
+  /* ---------- Result ---------- */
+  .rcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px 22px;overflow:hidden;position:relative}
+  .rcard::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:repeating-linear-gradient(-45deg,var(--accent) 0 14px,var(--volt) 14px 28px)}
+  .rlabel{color:var(--muted);font-size:14px;font-weight:700;margin-top:6px}
+  .rcode{font-family:Archivo,sans-serif;font-size:56px;font-weight:900;letter-spacing:.06em;line-height:1;margin:8px 0 2px}
+  @media(max-width:520px){.rcode{font-size:44px}}
+  .rname{font-size:26px;font-weight:900;margin:0}
+  .rtag{color:var(--coral);font-weight:800;font-size:15.5px;margin:4px 0 0}
+  .rdesc{color:var(--ink);font-size:15.5px;margin:14px 0 0}
+  .letters-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .lchip{background:var(--surface2);border-radius:10px;padding:8px 11px;font-size:13px}
+  .lchip b{font-family:Archivo,sans-serif;margin-right:5px;color:var(--accent)}
+  section.block{margin-top:26px}
+  section.block h2{font-size:17px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+  section.block h2::after{content:"";flex:1;height:1px;background:var(--line)}
+  .bar-row{margin-bottom:14px}
+  .bar-head{display:flex;justify-content:space-between;font-size:13.5px;font-weight:700}
+  .bar-head span:last-child{color:var(--muted);font-weight:500}
+  .bar{height:12px;background:var(--bar-bg);border-radius:999px;overflow:hidden;margin-top:6px;display:flex}
+  .bar i{display:block;height:100%;background:var(--accent)}
+  .bar em{display:block;height:100%;background:var(--coral);opacity:.85}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:520px){.cols{grid-template-columns:1fr}}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .panel h3{margin:0 0 8px;font-size:15px}
+  .panel ul{margin:0;padding-left:18px;color:var(--muted);font-size:14.5px}
+  .panel li{margin:4px 0}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:var(--coral-bg);color:var(--ink);border-radius:999px;padding:8px 13px;font-size:14px;font-weight:700}
+  .plan{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:6px 16px}
+  .plan div{display:flex;gap:12px;padding:11px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
+  .plan div:last-child{border-bottom:0}
+  .plan b{flex:0 0 52px;color:var(--accent)}
+  .partner{background:var(--volt);color:var(--volt-ink);border-radius:14px;padding:16px}
+  .partner .code{font-family:Archivo,sans-serif;font-weight:900;letter-spacing:.08em}
+  .partner p{margin:4px 0 0;font-size:14.5px}
+  .actions{display:grid;gap:10px;margin-top:22px}
+  .secondary{width:100%;border:2px solid var(--accent);background:transparent;color:var(--ink);border-radius:14px;font-size:16px;font-weight:800;padding:13px}
+  .copied{text-align:center;color:var(--accent);font-weight:700;font-size:14px;min-height:22px;margin-top:6px}
+  .alltypes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  @media(max-width:520px){.alltypes{grid-template-columns:repeat(2,1fr)}}
+  .tcell{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+  .tcell .c{font-family:Archivo,sans-serif;font-weight:900;font-size:12.5px;letter-spacing:.06em;color:var(--muted)}
+  .tcell .n{font-size:13.5px;font-weight:700}
+  .tcell.me{border-color:var(--accent);background:var(--surface2)}
+  .tcell.me .c{color:var(--coral)}
+  .foot{color:var(--muted);font-size:12.5px;text-align:center;margin-top:28px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- START -->
+  <div id="view-start">
+    <span class="badge"><i></i> 16 型健身人格测试</span>
+    <h1>你是哪种<br><span class="hl">健身人格？</span></h1>
+    <p class="lead">像 MBTI 一样，回答 16 道二选一的问题，从四个维度测出你的健身人格类型——你靠什么坚持、适合练什么、又容易在哪一步放弃，全都测得出来。</p>
+
+    <div class="dims">
+      <div class="dim"><span class="letters">E / I</span><b>能量来源</b><span>E 群练派，越热闹越有劲 · I 独练派，一个人更专注</span></div>
+      <div class="dim"><span class="letters">P / C</span><b>训练偏好</b><span>P 力量派，爱撸铁追重量 · C 有氧派，爱跑跳追心率</span></div>
+      <div class="dim"><span class="letters">R / F</span><b>行动风格</b><span>R 计划派，照表打卡 · F 自由派，随心所欲</span></div>
+      <div class="dim"><span class="letters">B / H</span><b>核心目标</b><span>B 塑形派，为了身材 · H 健康派，为了状态</span></div>
+    </div>
+
+    <button class="cta" id="btn-start">开始测试 →</button>
+    <p class="meta">共 16 题 · 约 2 分钟 · 没有对错，选第一反应就好</p>
+
+    <div class="examples">
+      <h2>先偷看几个类型</h2>
+      <div class="ex-grid">
+        <div class="ex"><span class="code">IPRB</span><b>孤狼铁匠</b><span>一个人、一张计划表、一副铁，默默变强。</span></div>
+        <div class="ex"><span class="code">ECFB</span><b>派对运动家</b><span>哪里热闹去哪里，燃脂顺便社交。</span></div>
+        <div class="ex"><span class="code">ICRH</span><b>耐力修行者</b><span>雷打不动晨跑，练的是几十年的健康。</span></div>
+        <div class="ex"><span class="code">EPFH</span><b>快乐铁友</b><span>撸铁不为卷，只为和朋友一起开心。</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="view-quiz" class="hidden">
+    <div class="qtop"><span id="q-count">第 1 / 16 题</span><span id="q-pct">0%</span></div>
+    <div class="progress"><i id="q-bar"></i></div>
+    <div class="qcard">
+      <div class="qdim" id="q-dim"></div>
+      <div class="qtext" id="q-text"></div>
+      <div class="opts">
+        <button class="opt" id="opt-a"><span class="ab">A</span><span id="opt-a-text"></span></button>
+        <button class="opt" id="opt-b"><span class="ab">B</span><span id="opt-b-text"></span></button>
+      </div>
+    </div>
+    <div class="qnav">
+      <button class="ghost" id="btn-back">← 上一题</button>
+      <button class="ghost" id="btn-quit">重新开始</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="view-result" class="hidden">
+    <div class="rcard">
+      <div class="rlabel">你的健身人格是</div>
+      <div class="rcode" id="r-code">IPRB</div>
+      <p class="rname" id="r-name"></p>
+      <p class="rtag" id="r-tag"></p>
+      <p class="rdesc" id="r-desc"></p>
+      <div class="letters-row" id="r-letters"></div>
+    </div>
+
+    <section class="block">
+      <h2>你的四个维度</h2>
+      <div id="r-bars"></div>
+    </section>
+
+    <section class="block">
+      <div class="cols">
+        <div class="panel"><h3>💪 你的优势</h3><ul id="r-pros"></ul></div>
+        <div class="panel"><h3>⚠️ 容易踩的坑</h3><ul id="r-cons"></ul></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>最适合你的运动</h2>
+      <div class="chips" id="r-sports"></div>
+    </section>
+
+    <section class="block">
+      <h2>给你的一周安排参考</h2>
+      <div class="plan" id="r-plan"></div>
+    </section>
+
+    <section class="block">
+      <h2>你的最佳健身搭子</h2>
+      <div class="partner"><span class="code" id="r-pcode"></span> · <b id="r-pname"></b><p id="r-pdesc"></p></div>
+    </section>
+
+    <div class="actions">
+      <button class="cta" id="btn-copy">复制我的结果</button>
+      <button class="secondary" id="btn-again">再测一次</button>
+      <div class="copied" id="copy-tip"></div>
+    </div>
+
+    <section class="block">
+      <h2>全部 16 种健身人格</h2>
+      <div class="alltypes" id="r-all"></div>
+    </section>
+
+    <p class="foot">结果仅供娱乐和自我了解参考，训练请量力而行，不适请咨询专业教练或医生。</p>
+  </div>
+
+</div>
+
+<script>
+var QUESTIONS = [
+  // E / I
+  {dim:"能量来源", pair:"EI", q:"走进健身房，你更喜欢哪种氛围？", a:{t:"热闹一点，有人一起练更有劲", v:"E"}, b:{t:"安静一点，戴上耳机专注练自己的", v:"I"}},
+  {dim:"能量来源", pair:"EI", q:"朋友约你周末去爬山或骑行，你的第一反应是？", a:{t:"立刻答应，人多才好玩", v:"E"}, b:{t:"更想自己去，节奏自己说了算", v:"I"}},
+  {dim:"能量来源", pair:"EI", q:"练完一组动作，休息的间隙你通常会？", a:{t:"跟旁边的人聊两句，互相打气", v:"E"}, b:{t:"放空或刷会儿手机，沉浸在自己的世界", v:"I"}},
+  {dim:"能量来源", pair:"EI", q:"哪种安排你更容易长期坚持？", a:{t:"固定跟搭子约练，或跟着团课走", v:"E"}, b:{t:"自己定时间，想练就练，不用等任何人", v:"I"}},
+  // P / C
+  {dim:"训练偏好", pair:"PC", q:"只能选一样练满一小时，你选哪个？", a:{t:"撸铁：深蹲、硬拉，重量往上加", v:"P"}, b:{t:"跑步、骑行或游泳，出透一身汗", v:"C"}},
+  {dim:"训练偏好", pair:"PC", q:"哪种进步最让你有成就感？", a:{t:"卧推重量又涨了 5 公斤", v:"P"}, b:{t:"5 公里配速又快了 30 秒", v:"C"}},
+  {dim:"训练偏好", pair:"PC", q:"你更向往哪种状态？", a:{t:"肌肉线条分明，看起来很有力量感", v:"P"}, b:{t:"轻盈耐造，跑个半马也不带喘的", v:"C"}},
+  {dim:"训练偏好", pair:"PC", q:"休息时刷到健身视频，你更会点开哪种？", a:{t:"大重量训练、增肌教程", v:"P"}, b:{t:"跑步技巧、骑行和户外 vlog", v:"C"}},
+  // R / F
+  {dim:"行动风格", pair:"RF", q:"对于训练计划，你的态度是？", a:{t:"必须有计划表，照着打卡才安心", v:"R"}, b:{t:"计划只是参考，当天想练啥练啥", v:"F"}},
+  {dim:"行动风格", pair:"RF", q:"出差或旅游打乱了训练安排，你会？", a:{t:"想办法补回来，少练一次浑身难受", v:"R"}, b:{t:"正好休息一下，回来再说", v:"F"}},
+  {dim:"行动风格", pair:"RF", q:"你更喜欢哪一类课程或活动？", a:{t:"固定课表、动作编排好的课", v:"R"}, b:{t:"户外探索型的，每次都不一样", v:"F"}},
+  {dim:"行动风格", pair:"RF", q:"买运动装备时，你更像哪种人？", a:{t:"先列清单做功课，按需要买", v:"R"}, b:{t:"看到好玩的新装备就想试试", v:"F"}},
+  // B / H
+  {dim:"核心目标", pair:"BH", q:"你开始健身，最主要的原因是？", a:{t:"想改变身材，穿衣服更好看", v:"B"}, b:{t:"想更健康，睡得好、精力足、少生病", v:"H"}},
+  {dim:"核心目标", pair:"BH", q:"哪句话更能激励你坚持下去？", a:{t:"「镜子里的自己越来越好看了」", v:"B"}, b:{t:"「最近明显感觉精力变好了」", v:"H"}},
+  {dim:"核心目标", pair:"BH", q:"如果效果只能选一个，你选？", a:{t:"体脂下降，线条和马甲线出来", v:"B"}, b:{t:"体检指标变好，身体没毛病", v:"H"}},
+  {dim:"核心目标", pair:"BH", q:"练了三个月，外形没啥变化，但你明显更有劲儿了，你会？", a:{t:"有点失落，外形没变，动力会打折", v:"B"}, b:{t:"很满意，这正是我想要的效果", v:"H"}}
+];
+
+var TYPES = {
+  "EPRB":{name:"铁馆队长", tag:"天生的领队，力量与身材都要赢", desc:"你一进健身房就自带气场：重量要冲，身材要练，还忍不住拉着全队一起进步。你的热情很有感染力，身边人常被你带着练起来。", sports:["力量举","CrossFit 团课","健美分化训练"], partner:"ICFH"},
+  "EPRH":{name:"力量领队", tag:"靠谱的团队基石，强壮又长久", desc:"你喜欢和大家一起练力量，但目标不只是好看——你更在意长期健康和实实在在的体能。计划感强，是团里最让人放心的那个人。", sports:["力量训练","团体体能课","壶铃训练"], partner:"IPFB"},
+  "EPFB":{name:"燃场主角", tag:"健身房的焦点，练到哪儿嗨到哪儿", desc:"你练力量从不闷头苦练：新动作、新挑战、拍照打卡，样样都要有。你享受被注视的感觉，这份表现欲正是你坚持的最大燃料。", sports:["健美训练","街头健身","搏击力量课"], partner:"ICRB"},
+  "EPFH":{name:"快乐铁友", tag:"撸铁不为卷，只为和朋友一起开心", desc:"对你来说，健身房是第二个社交场。和朋友一起撸铁、互相辅助、练完去吃饭——过程开心，你才能一直练下去。", sports:["双人搭档训练","团课力量循环","飞盘 + 力量组合"], partner:"IPFH"},
+  "ECRB":{name:"团练燃脂王", tag:"跟着节奏燃脂，身材管理一把好手", desc:"你最爱团课和集体有氧的氛围，跟着音乐和大家一起出汗，顺便把身材管住。有人一起卷，你就不会掉队。", sports:["动感单车团课","有氧搏击操","跑团训练"], partner:"IPRB"},
+  "ECRH":{name:"元气团长", tag:"把健康过成一种热闹的生活方式", desc:"你组织晨跑、约人骑行，把运动变成朋友间的固定聚会。你追求的不是极致身材，而是大家一起元气满满地过日子。", sports:["跑团","团体骑行","徒步团建"], partner:"ICFH"},
+  "ECFB":{name:"派对运动家", tag:"哪里热闹去哪里，燃脂顺便社交", desc:"让你一个人跑步你会睡着，但音乐一响、人一多，你立刻满电。舞蹈、搏击操、夜跑派对——好玩，你才会一直出现。", sports:["尊巴 / 舞蹈课","有氧搏击","夜跑活动"], partner:"IPFB"},
+  "ECFH":{name:"户外社交家", tag:"运动是借口，认识世界和朋友才是正事", desc:"你爱一切户外的、集体的、新鲜的运动：徒步、骑行、桨板、飞盘。对你来说，健康是在玩的过程中顺便得到的。", sports:["徒步","飞盘","桨板 / 皮划艇"], partner:"IPRH"},
+  "IPRB":{name:"孤狼铁匠", tag:"一个人、一张计划表、一副铁，默默变强", desc:"你不需要观众，也不需要热闹。耳机一戴，照着计划一組一组往下推，重量和镜子里的变化就是你的全部动力。自律得有点可怕。", sports:["力量举","健美分化训练","居家哑铃训练"], partner:"ECFH"},
+  "IPRH":{name:"沉稳筑肌者", tag:"不声不响，把身体当成长期工程来建", desc:"你练得很稳：动作标准、计划周全、从不跟人比重量。你清楚自己练的是十年后的身体，所以每一步都踏实。", sports:["力量训练","普拉提器械","游泳"], partner:"ECFB"},
+  "IPFB":{name:"独行雕刻师", tag:"把自己的身体当作品，慢慢雕", desc:"你享受独自训练的自由，今天练胸明天练背全看状态，但审美在线、对线条挑剔。你的身材，就是你最有耐心的作品。", sports:["健美训练","自重训练","瑜伽塑形"], partner:"EPRH"},
+  "IPFH":{name:"静修力士", tag:"练的是力量，修的是内心", desc:"你喜欢一个人安安静静地练，不追热点也不打卡。训练对你更像一种冥想：出一身汗，脑子就清净了。", sports:["居家力量训练","太极 / 八段锦 + 力量","独自游泳"], partner:"EPFH"},
+  "ICRB":{name:"晨光自律者", tag:"闹钟一响就出门，为线条也为自律", desc:"你是朋友圈里那个雷打不动晨跑打卡的人。有氧是你的主场，计划表是你的安全感，身材的变化是你每天早起的理由。", sports:["晨跑","跳绳训练","HIIT 打卡计划"], partner:"EPFB"},
+  "ICRH":{name:"耐力修行者", tag:"练的不是身材，是几十年的健康", desc:"你跑步、游泳、骑行，不为拍照，只为心肺和体检单上的数字。节奏稳定、心态平和，你是那种能把运动坚持一辈子的人。", sports:["长跑","游泳","长途骑行"], partner:"EPRB"},
+  "ICFB":{name:"自由跑者", tag:"路线随心，风景就是健身房", desc:"你受不了固定的计划表，但只要天气好、风景好，你随时能出门跑一圈。自由是你的燃料，身材是顺路捡到的奖励。", sports:["越野跑","城市漫跑","骑行探索"], partner:"EPRH"},
+  "ICFH":{name:"禅意漫游者", tag:"慢慢走、慢慢练，健康是散步散出来的", desc:"你偏爱低强度、可持续的运动：散步、瑜伽、拉伸、慢骑。不争不抢，但只要是你认定的节奏，你能坚持得比谁都久。", sports:["瑜伽","快走 / 健走","太极"], partner:"EPRB"}
+};
+
+var DIM_INFO = {
+  "E":{label:"群练派", desc:"靠氛围和同伴充电"},
+  "I":{label:"独练派", desc:"靠专注和独处充电"},
+  "P":{label:"力量派", desc:"偏爱重量与肌肉"},
+  "C":{label:"有氧派", desc:"偏爱心肺与耐力"},
+  "R":{label:"计划派", desc:"照表执行最安心"},
+  "F":{label:"自由派", desc:"随心而动更有劲"},
+  "B":{label:"塑形派", desc:"为身材和线条而练"},
+  "H":{label:"健康派", desc:"为状态和健康而练"}
+};
+var PAIRS = [["E","I"],["P","C"],["R","F"],["B","H"]];
+var PAIR_NAMES = ["能量来源","训练偏好","行动风格","核心目标"];
+
+var TRAITS = {
+  pros:{
+    "E":["氛围感拉满，很难一个人偷懒放弃","容易找到搭子，互相监督"],
+    "I":["专注度高，训练效率好","时间灵活，不受他人影响"],
+    "P":["力量进步看得见，成就感强","增肌对骨骼和代谢都有长期好处"],
+    "C":["心肺功能进步快，日常精力明显变好","上手门槛低，随时随地能练"],
+    "R":["执行力强，进步稳定可预期","不容易三分钟热度"],
+    "F":["不容易厌倦，运动新鲜感足","会听身体的话，不容易硬撑受伤"],
+    "B":["目标清晰，动力直接","对饮食和作息也会更自律"],
+    "H":["心态平稳，不容易因外形焦虑","更容易把运动坚持成一辈子的习惯"]
+  },
+  cons:{
+    "E":["搭子鸽了，你也容易跟着鸽","容易被别人的节奏带偏"],
+    "I":["没人监督时容易给自己放水","进步卡住时没人交流，容易钻牛角尖"],
+    "P":["容易只练上半身，忽略心肺","冲重量时受伤风险更高"],
+    "C":["练久了容易进入平台期","过量有氧可能掉肌肉"],
+    "R":["计划被打乱时容易全盘放弃","容易练得太机械，失去乐趣"],
+    "F":["没有计划，进步容易原地打转","状态不好时容易连续缺席"],
+    "B":["外形变化慢时容易焦虑、想放弃","容易被网络身材图影响心态"],
+    "H":["目标太温和时，强度容易不够","缺少短期反馈，偶尔会没动力"]
+  }
+};
+
+var idx = 0;
+var answers = [];
+
+var el = function(id){ return document.getElementById(id); };
+
+function show(view){
+  el("view-start").classList.toggle("hidden", view!=="start");
+  el("view-quiz").classList.toggle("hidden", view!=="quiz");
+  el("view-result").classList.toggle("hidden", view!=="result");
+  window.scrollTo(0,0);
+}
+
+function renderQ(){
+  var q = QUESTIONS[idx];
+  el("q-count").textContent = "第 " + (idx+1) + " / " + QUESTIONS.length + " 题";
+  var pct = Math.round(idx / QUESTIONS.length * 100);
+  el("q-pct").textContent = pct + "%";
+  el("q-bar").style.width = pct + "%";
+  el("q-dim").textContent = q.dim;
+  el("q-text").textContent = q.q;
+  el("opt-a-text").textContent = q.a.t;
+  el("opt-b-text").textContent = q.b.t;
+  el("opt-a").classList.toggle("picked", answers[idx]===q.a.v);
+  el("opt-b").classList.toggle("picked", answers[idx]===q.b.v);
+  el("btn-back").disabled = idx===0;
+}
+
+function pick(v){
+  answers[idx] = v;
+  renderQ();
+  setTimeout(function(){
+    if(idx < QUESTIONS.length-1){ idx++; renderQ(); }
+    else { finish(); }
+  }, 160);
+}
+
+function finish(){
+  var counts = {E:0,I:0,P:0,C:0,R:0,F:0,B:0,H:0};
+  answers.forEach(function(v){ counts[v]++; });
+  var code = PAIRS.map(function(p){ return counts[p[0]]>=counts[p[1]] ? p[0] : p[1]; }).join("");
+  var t = TYPES[code];
+  el("r-code").textContent = code;
+  el("r-name").textContent = t.name;
+  el("r-tag").textContent = t.tag;
+  el("r-desc").textContent = t.desc;
+
+  el("r-letters").innerHTML = code.split("").map(function(ch){
+    return '<span class="lchip"><b>'+ch+'</b>'+DIM_INFO[ch].label+' · '+DIM_INFO[ch].desc+'</span>';
+  }).join("");
+
+  el("r-bars").innerHTML = PAIRS.map(function(p,i){
+    var total = counts[p[0]]+counts[p[1]] || 1;
+    var leftPct = Math.round(counts[p[0]]/total*100);
+    return '<div class="bar-row"><div class="bar-head"><span>'+p[0]+' '+DIM_INFO[p[0]].label+' '+leftPct+'%</span><span>'+PAIR_NAMES[i]+'</span><span>'+(100-leftPct)+'% '+DIM_INFO[p[1]].label+' '+p[1]+'</span></div>'
+      + '<div class="bar"><i style="width:'+leftPct+'%"></i><em style="width:'+(100-leftPct)+'%"></em></div></div>';
+  }).join("");
+
+  var pros=[], cons=[];
+  code.split("").forEach(function(ch){ pros.push(TRAITS.pros[ch][0]); cons.push(TRAITS.cons[ch][0]); });
+  el("r-pros").innerHTML = pros.slice(0,3).map(function(s){return "<li>"+s+"</li>";}).join("");
+  el("r-cons").innerHTML = cons.slice(0,3).map(function(s){return "<li>"+s+"</li>";}).join("");
+
+  el("r-sports").innerHTML = t.sports.map(function(s){return '<span class="chip">'+s+'</span>';}).join("");
+
+  var isPower = code[1]==="P";
+  var isRoutine = code[2]==="R";
+  var plan = isPower
+    ? [["周一","上肢力量：推 + 拉，4–5 个动作"],["周三","下肢力量：深蹲 / 硬拉为主"],["周五","全身力量 + 20 分钟轻有氧"],["周末", isRoutine ? "补一次弱项训练，记录重量进步" : "户外活动一次，爬山、骑行或游泳随心选"]]
+    : [["周一","有氧 40 分钟：跑步 / 单车 / 游泳选一样"],["周三","间歇训练 25 分钟 + 核心 10 分钟"],["周五","有氧 45 分钟，强度比周一稍低"],["周末", isRoutine ? "长距离慢有氧一次，记录距离和配速" : "户外探索一次，新路线、新玩法随心选"]];
+  el("r-plan").innerHTML = plan.map(function(r){return "<div><b>"+r[0]+"</b><span>"+r[1]+"</span></div>";}).join("");
+
+  var partner = TYPES[t.partner];
+  el("r-pcode").textContent = t.partner;
+  el("r-pname").textContent = partner.name;
+  el("r-pdesc").textContent = partner.tag + "——你们的风格正好互补，一个负责带动，一个负责沉稳，组队最不容易半途而废。";
+
+  el("r-all").innerHTML = Object.keys(TYPES).map(function(k){
+    return '<div class="tcell'+(k===code?" me":"")+'"><div class="c">'+k+'</div><div class="n">'+TYPES[k].name+'</div></div>';
+  }).join("");
+
+  el("copy-tip").textContent = "";
+  el("btn-copy").setAttribute("data-text",
+    "我的健身人格是 " + code + "「" + t.name + "」——" + t.tag + "。适合我： " + t.sports.join("、") + "。你也来测测你是哪种健身人格！");
+  show("result");
+}
+
+el("btn-start").addEventListener("click", function(){ idx=0; answers=[]; show("quiz"); renderQ(); });
+el("opt-a").addEventListener("click", function(){ pick(QUESTIONS[idx].a.v); });
+el("opt-b").addEventListener("click", function(){ pick(QUESTIONS[idx].b.v); });
+el("btn-back").addEventListener("click", function(){ if(idx>0){ idx--; renderQ(); } });
+el("btn-quit").addEventListener("click", function(){ idx=0; answers=[]; show("start"); });
+el("btn-again").addEventListener("click", function(){ idx=0; answers=[]; show("quiz"); renderQ(); });
+el("btn-copy").addEventListener("click", function(){
+  var text = el("btn-copy").getAttribute("data-text") || "";
+  function done(){ el("copy-tip").textContent = "已复制，去分享给朋友吧 ✓"; }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(function(){ fallback(); });
+  } else { fallback(); }
+  function fallback(){
+    var ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta);
+    ta.select(); try{ document.execCommand("copy"); done(); }catch(e){ el("copy-tip").textContent = text; }
+    document.body.removeChild(ta);
+  }
+});
+</script>
+</body>
+</html>
