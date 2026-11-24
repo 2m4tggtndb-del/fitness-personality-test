@@ -127,6 +127,22 @@
   .tcell .n{font-size:13.5px;font-weight:700}
   .tcell.me{border-color:var(--accent);background:var(--surface2)}
   .tcell.me .c{color:var(--coral)}
+  /* ---------- Share card ---------- */
+  .share-card{background:#FFFEF9;color:#171A15;border:1px solid var(--line);border-radius:var(--radius);padding:24px 22px 20px;text-align:center;position:relative;overflow:hidden}
+  .share-card::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:repeating-linear-gradient(-45deg,var(--accent) 0 14px,var(--volt) 14px 28px)}
+  .sc-pill{display:inline-flex;align-items:center;gap:8px;background:#DCEF9A;color:#2E3D08;font-weight:800;font-size:13px;padding:7px 14px;border-radius:999px;margin-top:4px}
+  .sc-pill i{width:8px;height:8px;border-radius:50%;background:#E85D1A;display:inline-block}
+  .sc-char{width:min(250px,70vw);aspect-ratio:1/1;margin:8px auto 0}
+  .sc-char svg{width:100%;height:100%;display:block}
+  .sc-name{font-size:29px;font-weight:900;line-height:1.25;margin-top:2px}
+  .sc-code{display:inline-block;vertical-align:middle;margin-left:9px;background:#EEF1E4;color:#5A8F06;font-size:14.5px;font-weight:900;letter-spacing:.14em;padding:4px 10px;border-radius:8px}
+  .sc-tag{color:#E85D1A;font-weight:800;font-size:16px;margin:7px 0 0}
+  .sc-foot{margin-top:20px;padding-top:18px;border-top:1px dashed #DEE2D2;text-align:center}
+  .sc-url-title{display:block;font-size:16.5px;line-height:1.45}
+  .sc-url{margin-top:10px;background:#EEF1E4;color:#2E3D08;border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;line-height:1.55;word-break:break-all}
+  .save-wrap{margin-top:14px}
+  #poster-preview{margin-top:16px;text-align:center}
+  #poster-preview img{width:100%;max-width:400px;border-radius:14px;border:1px solid var(--line);display:block;margin:0 auto}
   .foot{color:var(--muted);font-size:12.5px;text-align:center;margin-top:28px}
 </style>
 </head>
@@ -190,6 +206,28 @@
       <p class="rdesc" id="r-desc"></p>
       <div class="letters-row" id="r-letters"></div>
     </div>
+
+    <section class="block">
+      <h2>你的专属人格卡片</h2>
+      <div class="share-card" id="share-card">
+        <span class="sc-pill"><i></i>16 型健身人格测试</span>
+        <div class="sc-char" id="sc-char"></div>
+        <div class="sc-name"><span id="sc-name"></span><span class="sc-code" id="sc-code"></span></div>
+        <p class="sc-tag" id="sc-tag"></p>
+        <div class="sc-foot">
+          <b class="sc-url-title">复制链接来测测你是哪种健身人格</b>
+          <div class="sc-url">2m4tggtndb-del.github.io/fitness-personality-test/</div>
+        </div>
+      </div>
+      <div class="save-wrap">
+        <button class="cta" id="btn-save">保存图片</button>
+        <p class="meta" id="save-tip">把卡片存成图片，发朋友圈或小红书给朋友测一测</p>
+      </div>
+      <div id="poster-preview" class="hidden">
+        <img id="poster-img" alt="我的健身人格卡片" />
+        <p class="meta">图片已生成，长按图片也能保存到相册</p>
+      </div>
+    </section>
 
     <section class="block">
       <h2>你的四个维度</h2>
@@ -318,6 +356,248 @@ var TRAITS = {
   }
 };
 
+// ===== 16 种人格的专属 Q 版形象（内联 SVG，按类型配色/配件/表情/道具）=====
+var INK = "#43302B";
+function shade(hex, f){
+  var n = parseInt(hex.slice(1), 16);
+  var r = Math.round(((n>>16)&255)*f), g = Math.round(((n>>8)&255)*f), b = Math.round((n&255)*f);
+  return "rgb("+r+","+g+","+b+")";
+}
+function star4(cx, cy, s, fill, extra){
+  return '<path d="M'+cx+' '+(cy-s)+' L'+(cx+s*0.28)+' '+(cy-s*0.28)+' L'+(cx+s)+' '+cy+' L'+(cx+s*0.28)+' '+(cy+s*0.28)+' L'+cx+' '+(cy+s)+' L'+(cx-s*0.28)+' '+(cy+s*0.28)+' L'+(cx-s)+' '+cy+' L'+(cx-s*0.28)+' '+(cy-s*0.28)+' Z" fill="'+fill+'"'+(extra||"")+'/>';
+}
+function heartG(x, y, s, color){
+  return '<g transform="translate('+x+','+y+') scale('+s+')"><path d="M0 3 C-1 0 -5 -3 -8 -3 C-14 -3 -16 2 -16 5 C-16 11 -8 15 0 20 C8 15 16 11 16 5 C16 2 14 -3 8 -3 C5 -3 1 0 0 3 Z" fill="'+color+'"/></g>';
+}
+function noteG(x, y, s, color){
+  return '<g transform="translate('+x+','+y+') scale('+s+')" fill="'+color+'"><ellipse cx="0" cy="0" rx="6" ry="4.5" transform="rotate(-20)"/><rect x="4.5" y="-20" width="3" height="20" rx="1.5"/><path d="M4.5 -20 C10 -18 12 -14 11 -9 C9 -13 7 -14 4.5 -14 Z"/></g>';
+}
+function dropG(x, y, s){
+  return '<path transform="translate('+x+','+y+') scale('+s+')" d="M0 -9 C5 -1 7.5 3.5 7.5 8 A7.5 7.5 0 1 1 -7.5 8 C-7.5 3.5 -5 -1 0 -9 Z" fill="#7ED3F7"/>';
+}
+function decoSVG(kind){
+  switch(kind){
+    case "sparkles": return star4(34,46,10,"#FFC93D")+star4(168,58,8,"#FFC93D")+star4(164,148,6.5,"#FFC93D")+star4(28,138,6,"#FFC93D");
+    case "hearts": return heartG(30,48,0.95,"#F78FB3")+heartG(172,60,0.7,"#F49AC1")+heartG(168,148,0.55,"#F78FB3");
+    case "sun": return '<g stroke="#FFC93D" stroke-width="4.5" stroke-linecap="round"><path d="M38 15 v8 M13 40 h8 M55 40 h8 M20 22 l5 5 M56 22 l-5 5 M20 58 l5 -5 M56 58 l-5 -5"/></g><circle cx="38" cy="40" r="12" fill="#FFD93D"/>';
+    case "moon": return '<path fill-rule="evenodd" d="M162 16 a18 18 0 1 0 0 36 a18 18 0 1 0 0 -36 M170 21 a14 14 0 1 0 0 28 a14 14 0 1 0 0 -28" fill="#FFD93D"/>'+star4(36,42,7,"#FFE9A8")+star4(30,122,5,"#FFE9A8");
+    case "cloud": return '<g fill="#FFFFFF"><ellipse cx="162" cy="40" rx="21" ry="12"/><ellipse cx="148" cy="47" rx="14" ry="9"/><ellipse cx="177" cy="47" rx="13" ry="8"/></g><g fill="#FFFFFF" opacity="0.85"><ellipse cx="34" cy="146" rx="15" ry="8"/><ellipse cx="24" cy="151" rx="10" ry="6"/><ellipse cx="45" cy="151" rx="9" ry="5.5"/></g>';
+    case "party": return noteG(36,64,1,"#5B21B6")+noteG(166,88,0.8,"#5B21B6")+'<rect x="30" y="118" width="10" height="5" rx="2" transform="rotate(28 35 120)" fill="#FFD93D"/><rect x="160" y="128" width="10" height="5" rx="2" transform="rotate(-24 165 130)" fill="#FF8A3D"/><circle cx="170" cy="40" r="4" fill="#4CC9F0"/><circle cx="26" cy="150" r="4" fill="#F15BB5"/><rect x="150" y="160" width="9" height="5" rx="2" transform="rotate(40 154 162)" fill="#51B46A"/>';
+    case "sweat": return dropG(28,84,1)+dropG(174,66,0.8);
+    case "wind": return '<g stroke="#8FCBDA" stroke-width="5" fill="none" stroke-linecap="round"><path d="M18 78 h34 a10 10 0 1 0 -10 -10"/><path d="M14 108 h44 a11 11 0 1 1 -11 11"/><path d="M148 152 h30 a9 9 0 1 0 -9 -9"/></g>';
+    case "leaves": return '<ellipse cx="32" cy="50" rx="11" ry="6" transform="rotate(-32 32 50)" fill="#7FBF7F"/><ellipse cx="168" cy="128" rx="10" ry="5.5" transform="rotate(24 168 128)" fill="#7FBF7F"/><ellipse cx="160" cy="38" rx="8" ry="4.5" transform="rotate(-14 160 38)" fill="#A5D6A7"/>';
+    case "road": return '<g stroke="#A9BCE0" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="0.5 13" fill="none"><path d="M14 176 C60 158 140 158 186 176"/><path d="M30 190 C70 176 130 176 170 190"/></g>';
+    case "butterfly": return '<g transform="translate(168,54)"><ellipse cx="-7" cy="-3" rx="7" ry="5" transform="rotate(-30)" fill="#F49AC1"/><ellipse cx="7" cy="-3" rx="7" ry="5" transform="rotate(30)" fill="#F49AC1"/><ellipse cx="-6" cy="5" rx="5.5" ry="4" transform="rotate(25)" fill="#F8BBD0"/><ellipse cx="6" cy="5" rx="5.5" ry="4" transform="rotate(-25)" fill="#F8BBD0"/><rect x="-1.5" y="-6" width="3" height="13" rx="1.5" fill="#43302B"/></g>';
+  }
+  return "";
+}
+function topSVG(c, dark){
+  switch(c.top){
+    case "partyhat": return '<g><path d="M100 10 L76 50 L124 50 Z" fill="#FF5D8F"/><circle cx="92" cy="34" r="4" fill="#FFD93D"/><circle cx="107" cy="24" r="3.4" fill="#FFFFFF"/><circle cx="100" cy="43" r="3.4" fill="#4CC9F0"/><circle cx="100" cy="10" r="7" fill="#FFD93D"/></g>';
+    case "cap": return '<g><path d="M57 64 A45 42 0 0 1 143 64 Z" fill="'+c.topColor+'"/><ellipse cx="100" cy="65" rx="56" ry="9" fill="'+shade(c.topColor,0.8)+'"/><circle cx="100" cy="24" r="5" fill="'+shade(c.topColor,0.8)+'"/></g>';
+    case "strawhat": return '<g><ellipse cx="100" cy="58" rx="58" ry="11" fill="#F2D38A"/><path d="M73 57 A27 20 0 0 1 127 57 Z" fill="#F7DE9C"/><path d="M75 53 A26 18 0 0 1 125 53" stroke="#E8B84B" stroke-width="4" fill="none"/></g>';
+    case "headband": {
+      var s = '<path d="M46 80 A58 58 0 0 1 154 80" stroke="'+c.band+'" stroke-width="13" fill="none"/>';
+      if(c.tails) s += '<path d="M148 76 q14 2 13 18 l-9 -2 q-5 -8 -4 -16 Z" fill="'+c.band+'"/><path d="M141 81 q10 6 7 20 l-8 -4 q-3 -9 1 -16 Z" fill="'+c.band+'" opacity="0.75"/>';
+      return s;
+    }
+    case "sprout": return '<path d="M100 34 C100 27 100 22 100 16" stroke="#3E8914" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="90" cy="14" rx="10" ry="5.5" transform="rotate(-28 90 14)" fill="#51B46A"/><ellipse cx="110" cy="12" rx="10" ry="5.5" transform="rotate(24 110 12)" fill="#6CC47C"/>';
+    case "leaf": return '<path d="M104 34 C106 20 116 10 130 8 C131 22 123 33 110 36 Z" fill="#51B46A"/><path d="M106 33 C112 24 120 16 128 11" stroke="#3E8914" stroke-width="2.5" fill="none"/>';
+    case "wolfears": return '<g fill="'+dark+'"><path d="M60 40 L48 8 L86 22 Z"/><path d="M140 40 L152 8 L114 22 Z"/></g><g fill="#E8A2B4"><path d="M61 32 L56 17 L76 24 Z"/><path d="M139 32 L144 17 L124 24 Z"/></g>';
+  }
+  return "";
+}
+function eyesSVG(kind){
+  switch(kind){
+    case "dot": return '<circle cx="82" cy="106" r="5.5" fill="'+INK+'"/><circle cx="118" cy="106" r="5.5" fill="'+INK+'"/><circle cx="80.2" cy="104.2" r="1.8" fill="#FFFFFF"/><circle cx="116.2" cy="104.2" r="1.8" fill="#FFFFFF"/>';
+    case "happy": return '<path d="M70 108 A12 10 0 0 1 94 108" stroke="'+INK+'" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M106 108 A12 10 0 0 1 130 108" stroke="'+INK+'" stroke-width="5" fill="none" stroke-linecap="round"/>';
+    case "closed": return '<path d="M71 105 A11 8 0 0 0 93 105" stroke="'+INK+'" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M107 105 A11 8 0 0 0 129 105" stroke="'+INK+'" stroke-width="5" fill="none" stroke-linecap="round"/>';
+    case "wink": return '<circle cx="82" cy="106" r="5.5" fill="'+INK+'"/><circle cx="80.2" cy="104.2" r="1.8" fill="#FFFFFF"/><path d="M106 108 A12 10 0 0 1 130 108" stroke="'+INK+'" stroke-width="5" fill="none" stroke-linecap="round"/>';
+    case "determined": return '<circle cx="82" cy="108" r="5.5" fill="'+INK+'"/><circle cx="118" cy="108" r="5.5" fill="'+INK+'"/><path d="M68 94 L94 100" stroke="'+INK+'" stroke-width="5" stroke-linecap="round"/><path d="M132 94 L106 100" stroke="'+INK+'" stroke-width="5" stroke-linecap="round"/>';
+    case "cool": return '<path d="M71 106 A11 9 0 0 0 93 106" stroke="'+INK+'" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M107 106 A11 9 0 0 0 129 106" stroke="'+INK+'" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M104 90 L131 85" stroke="'+INK+'" stroke-width="4.5" stroke-linecap="round"/>';
+    case "sparkle": return star4(82,106,11,INK)+star4(118,106,11,INK);
+    case "glasses": return star4(82,100,16,"#FFD93D",' stroke="'+INK+'" stroke-width="2.2" stroke-linejoin="round"')+star4(118,100,16,"#FFD93D",' stroke="'+INK+'" stroke-width="2.2" stroke-linejoin="round"')+'<path d="M97 98 h6" stroke="'+INK+'" stroke-width="3.5" stroke-linecap="round"/><path d="M67 95 L50 88 M133 95 L150 88" stroke="'+INK+'" stroke-width="3.5" stroke-linecap="round"/>';
+  }
+  return "";
+}
+function mouthSVG(kind){
+  switch(kind){
+    case "smile": return '<path d="M87 121 A14 11 0 0 0 113 121" stroke="'+INK+'" stroke-width="5" fill="none" stroke-linecap="round"/>';
+    case "calm": return '<path d="M91 122 A10 8 0 0 0 109 122" stroke="'+INK+'" stroke-width="4.5" fill="none" stroke-linecap="round"/>';
+    case "grin": return '<path d="M83 117 h34 v5 a17 13 0 0 1 -34 0 Z" fill="#8A4B2A"/><rect x="85.5" y="117" width="29" height="5.5" rx="2" fill="#FFFFFF"/>';
+    case "open": return '<path d="M81 117 A19 15 0 0 0 119 117 Z" fill="#8A4B2A"/><ellipse cx="100" cy="128" rx="8.5" ry="4" fill="#F28BA8"/>';
+    case "flat": return '<path d="M90 125 h20" stroke="'+INK+'" stroke-width="5" stroke-linecap="round"/>';
+    case "cat": return '<path d="M85 120 A7.5 6.5 0 0 0 100 120 A7.5 6.5 0 0 0 115 120" stroke="'+INK+'" stroke-width="4.5" fill="none" stroke-linecap="round"/>';
+  }
+  return "";
+}
+function armsSVG(c){
+  var d = shade(c.body, 0.8);
+  switch(c.arms){
+    case "up": return '<ellipse cx="40" cy="76" rx="10" ry="21" transform="rotate(-28 40 76)" fill="'+d+'"/><ellipse cx="160" cy="76" rx="10" ry="21" transform="rotate(28 160 76)" fill="'+d+'"/>';
+    case "oneup": return '<ellipse cx="42" cy="120" rx="10" ry="18" transform="rotate(18 42 120)" fill="'+d+'"/><ellipse cx="160" cy="78" rx="10" ry="21" transform="rotate(28 160 78)" fill="'+d+'"/>';
+    case "hold": return '<ellipse cx="72" cy="142" rx="12" ry="9" transform="rotate(-18 72 142)" fill="'+d+'"/><ellipse cx="128" cy="142" rx="12" ry="9" transform="rotate(18 128 142)" fill="'+d+'"/>';
+    case "meditate": return '<ellipse cx="54" cy="148" rx="11" ry="17" transform="rotate(42 54 148)" fill="'+d+'"/><ellipse cx="146" cy="148" rx="11" ry="17" transform="rotate(-42 146 148)" fill="'+d+'"/>';
+    default: return '<ellipse cx="42" cy="120" rx="10" ry="18" transform="rotate(18 42 120)" fill="'+d+'"/><ellipse cx="158" cy="120" rx="10" ry="18" transform="rotate(-18 158 120)" fill="'+d+'"/>';
+  }
+}
+function dumbbellG(x, y, s, rot, color){
+  return '<g transform="translate('+x+','+y+') rotate('+rot+') scale('+s+')" fill="'+color+'"><rect x="-21" y="-12" width="9" height="24" rx="3.5"/><rect x="12" y="-12" width="9" height="24" rx="3.5"/><rect x="-13" y="-8.5" width="6" height="17" rx="2.5"/><rect x="7" y="-8.5" width="6" height="17" rx="2.5"/><rect x="-8" y="-3" width="16" height="6" rx="3" fill="#9AA0A6"/></g>';
+}
+function propSVG(c){
+  var s = "";
+  switch(c.prop){
+    case "barbellUp": s = '<g transform="translate(0,10)"><rect x="14" y="20" width="172" height="9" rx="4.5" fill="#6B7280"/><g fill="#374151"><rect x="20" y="6" width="11" height="38" rx="4"/><rect x="33" y="10" width="8" height="30" rx="3.5"/><rect x="169" y="6" width="11" height="38" rx="4"/><rect x="159" y="10" width="8" height="30" rx="3.5"/></g></g>'; break;
+    case "kettlebell": s = '<g><path d="M85 128 a15 13 0 0 1 30 0" stroke="#374151" stroke-width="7" fill="none"/><circle cx="100" cy="148" r="18" fill="#374151"/><circle cx="93" cy="141" r="5" fill="#6B7280"/></g>'; break;
+    case "dumbbells": s = dumbbellG(34,138,0.95,75,"#374151")+dumbbellG(166,138,0.95,75,"#374151"); break;
+    case "dumbbellBig": s = dumbbellG(168,140,1.35,80,"#2F3542"); break;
+    case "jumprope": s = '<path d="M30 92 C26 150 52 188 100 188 C148 188 174 150 170 92" stroke="#E85D1A" stroke-width="4.5" fill="none" stroke-linecap="round"/><rect x="24" y="78" width="7" height="18" rx="3.5" transform="rotate(12 27 87)" fill="#43302B"/><rect x="169" y="78" width="7" height="18" rx="3.5" transform="rotate(-12 172 87)" fill="#43302B"/>'; break;
+    case "flag": s = '<rect x="156" y="52" width="5" height="86" rx="2.5" fill="#8A6642"/><path d="M161 54 L189 63 L161 74 Z" fill="#E85D1A"/>'; break;
+    case "camera": s = '<g><rect x="76" y="134" width="48" height="32" rx="7" fill="#374151"/><rect x="90" y="127" width="20" height="9" rx="3" fill="#374151"/><circle cx="100" cy="150" r="10" fill="#9AA0A6"/><circle cx="100" cy="150" r="5.5" fill="#374151"/><circle cx="114" cy="141" r="2.4" fill="#FFD93D"/></g>'; break;
+    case "brick": s = '<g fill="#C96F4A"><rect x="14" y="160" width="30" height="13" rx="3"/><rect x="17" y="146" width="26" height="13" rx="3" fill="#D37E55"/></g><g><rect x="74" y="136" width="52" height="21" rx="5" fill="#C96F4A"/><path d="M100 136 v21 M74 146.5 h52" stroke="#A8542F" stroke-width="3"/></g>'; break;
+    case "mirror": s = '<g transform="translate(168,64) rotate(14)"><rect x="-3.5" y="0" width="7" height="20" rx="3.5" fill="#9AA0A6"/><ellipse cx="0" cy="-16" rx="14" ry="18" fill="#CDEFFA" stroke="#9AA0A6" stroke-width="3.5"/><path d="M-6 -22 l7 10 M-1 -26 l8 12" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></g>'; break;
+    case "lotus": s = '<g><ellipse cx="100" cy="182" rx="42" ry="8" fill="'+shade(c.body,0.8)+'"/><path d="M100 152 C109 163 109 174 100 180 C91 174 91 163 100 152 Z" fill="#F49AC1"/><path d="M78 160 C88 164 92 172 91 181 C82 179 77 170 78 160 Z" fill="#F8BBD0"/><path d="M122 160 C112 164 108 172 109 181 C118 179 123 170 122 160 Z" fill="#F8BBD0"/></g>'; break;
+    case "clock": s = '<g transform="translate(166,148)"><circle cx="-14" cy="-16" r="5" fill="#E85D1A"/><circle cx="14" cy="-16" r="5" fill="#E85D1A"/><circle cx="0" cy="0" r="17" fill="#FFFFFF" stroke="#E85D1A" stroke-width="4.5"/><path d="M0 0 L0 -9 M0 0 L6 3" stroke="#43302B" stroke-width="3.5" stroke-linecap="round"/><path d="M-9 15 l-4 6 M9 15 l4 6" stroke="#43302B" stroke-width="3.5" stroke-linecap="round"/></g>'; break;
+    case "teacup": s = '<g><path d="M79 140 h42 v9 a13 13 0 0 1 -13 13 h-16 a13 13 0 0 1 -13 -13 Z" fill="#FFFFFF" stroke="#D8DECF" stroke-width="2.5"/><path d="M121 143 a8 7 0 1 1 0 12" fill="none" stroke="#D8DECF" stroke-width="3.5"/><path d="M90 128 q3 -6 0 -11 M104 128 q3 -6 0 -11" stroke="#B9C4AE" stroke-width="3.5" fill="none" stroke-linecap="round"/><ellipse cx="100" cy="168" rx="24" ry="4.5" fill="#D8DECF"/></g>'; break;
+  }
+  if(c.prop2==="whistle") s += '<path d="M78 130 Q104 152 130 136" stroke="#43302B" stroke-width="3" fill="none"/><g transform="translate(132,142) rotate(10)"><path d="M-4 -5 h16 a6 6 0 0 1 6 6 v3 h-22 Z" fill="#FFC93D"/><circle cx="8" cy="1" r="3" fill="#43302B"/></g>';
+  if(c.prop2==="medal") s += '<path d="M84 126 L100 146 L116 126 L108 122 L100 134 L92 122 Z" fill="#E4572E"/><circle cx="100" cy="154" r="10" fill="#FFC93D" stroke="#E3A008" stroke-width="3"/><path d="M96 154 l3 3 l5 -6" stroke="#B97E10" stroke-width="2.5" fill="none" stroke-linecap="round"/>';
+  return s;
+}
+var CHAR = {
+  "EPRB":{body:"#FF8A3D", tint:"#FFE9D4", eyes:"determined", mouth:"grin", arms:"up", prop:"barbellUp", prop2:"medal", deco:"sparkles"},
+  "EPRH":{body:"#D64541", tint:"#FBE3E1", eyes:"dot", mouth:"smile", arms:"hold", prop:"kettlebell", prop2:"whistle", deco:"none"},
+  "EPFB":{body:"#F15BB5", tint:"#FDE3F3", eyes:"glasses", mouth:"open", arms:"oneup", prop:"none", deco:"sparkles"},
+  "EPFH":{body:"#FFC53D", tint:"#FFF3D2", eyes:"happy", mouth:"open", arms:"down", prop:"dumbbells", deco:"hearts"},
+  "ECRB":{body:"#FF6B6B", tint:"#FFE4E1", top:"headband", band:"#FFFFFF", eyes:"wink", mouth:"grin", arms:"down", prop:"jumprope", deco:"sweat"},
+  "ECRH":{body:"#51B46A", tint:"#E1F4E4", top:"sprout", eyes:"happy", mouth:"open", arms:"oneup", prop:"flag", deco:"sun"},
+  "ECFB":{body:"#9B5DE5", tint:"#EEE3FD", top:"partyhat", eyes:"sparkle", mouth:"open", arms:"up", prop:"none", deco:"party"},
+  "ECFH":{body:"#4CC9F0", tint:"#DFF6FD", top:"cap", topColor:"#FFD93D", eyes:"dot", mouth:"smile", arms:"hold", prop:"camera", deco:"cloud"},
+  "IPRB":{body:"#5B6B7F", tint:"#E3E9EF", top:"wolfears", eyes:"cool", mouth:"flat", arms:"down", prop:"dumbbellBig", deco:"moon", blush:false},
+  "IPRH":{body:"#2A9D8F", tint:"#DFF3F0", eyes:"dot", mouth:"calm", arms:"hold", prop:"brick", deco:"none"},
+  "IPFB":{body:"#B388EB", tint:"#F0E7FC", eyes:"wink", mouth:"cat", arms:"oneup", prop:"mirror", deco:"sparkles"},
+  "IPFH":{body:"#8FB996", tint:"#E7F2E9", top:"none", eyes:"closed", mouth:"calm", arms:"meditate", prop:"lotus", deco:"leaves"},
+  "ICRB":{body:"#FFB703", tint:"#FFF1CF", top:"headband", band:"#E85D1A", eyes:"determined", mouth:"smile", arms:"down", prop:"clock", deco:"sparkles"},
+  "ICRH":{body:"#4361EE", tint:"#E0E7FD", top:"headband", band:"#FFD93D", tails:true, eyes:"dot", mouth:"calm", arms:"down", prop:"none", deco:"road", blush:false},
+  "ICFB":{body:"#6EC6D8", tint:"#E1F4F8", top:"leaf", eyes:"happy", mouth:"open", arms:"oneup", prop:"none", deco:"wind"},
+  "ICFH":{body:"#7FC8A9", tint:"#E3F4EC", top:"strawhat", eyes:"closed", mouth:"calm", arms:"hold", prop:"teacup", deco:"butterfly"}
+};
+function charSVG(code, size){
+  var c = CHAR[code] || CHAR["IPRB"];
+  var dark = shade(c.body, 0.8);
+  var p = [];
+  p.push('<circle cx="100" cy="100" r="97" fill="'+c.tint+'"/>');
+  p.push(decoSVG(c.deco));
+  p.push('<ellipse cx="71" cy="177" rx="16" ry="7.5" fill="'+dark+'"/><ellipse cx="129" cy="177" rx="16" ry="7.5" fill="'+dark+'"/>');
+  if(c.arms==="up" || c.arms==="oneup" || c.arms==="down") p.push(armsSVG(c));
+  p.push('<path d="M100 30 C138 30 156 64 156 102 C156 146 132 170 100 170 C68 170 44 146 44 102 C44 64 62 30 100 30 Z" fill="'+c.body+'"/>');
+  p.push('<ellipse cx="100" cy="137" rx="33" ry="25" fill="#FFFFFF" opacity="0.32"/>');
+  p.push(topSVG(c, dark));
+  if(c.blush!==false) p.push('<ellipse cx="63" cy="121" rx="8.5" ry="5" fill="#FF9E9E" opacity="0.55"/><ellipse cx="137" cy="121" rx="8.5" ry="5" fill="#FF9E9E" opacity="0.55"/>');
+  p.push(eyesSVG(c.eyes));
+  p.push(mouthSVG(c.mouth));
+  if(c.arms==="hold" || c.arms==="meditate") p.push(armsSVG(c));
+  p.push(propSVG(c));
+  var w = size ? size : "100%";
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="'+w+'" height="'+w+'" role="img" aria-label="'+(TYPES[code] ? TYPES[code].name : "")+'专属形象">'+p.join("")+'</svg>';
+}
+
+// ===== 把分享卡片画成 1080×1440 的 PNG 并保存 =====
+var currentCode = "";
+var currentType = null;
+function rr(ctx, x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.arcTo(x+w, y, x+w, y+h, r);
+  ctx.arcTo(x+w, y+h, x, y+h, r);
+  ctx.arcTo(x, y+h, x, y, r);
+  ctx.arcTo(x, y, x+w, y, r);
+  ctx.closePath();
+}
+function finishSave(cv, code){
+  var url = cv.toDataURL("image/png");
+  el("poster-img").src = url;
+  el("poster-preview").classList.remove("hidden");
+  el("save-tip").textContent = "图片已生成！如果没有自动下载，长按下方图片保存到相册";
+  if(cv.toBlob){
+    cv.toBlob(function(blob){
+      if(!blob) return;
+      var burl = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = burl;
+      a.download = "健身人格-" + code + ".png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(burl); }, 5000);
+    }, "image/png");
+  }
+}
+function savePoster(){
+  if(!currentType) return;
+  var code = currentCode, t = currentType;
+  var W = 1080, H = 1440;
+  var cv = document.createElement("canvas");
+  cv.width = W; cv.height = H;
+  var ctx = cv.getContext("2d");
+  var FONT = "system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif";
+  ctx.fillStyle = "#F4F5EF"; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = "#E2E6D2";
+  for(var gx=22; gx<W; gx+=44) for(var gy=22; gy<H; gy+=44){
+    ctx.beginPath(); ctx.arc(gx, gy, 3, 0, 6.2832); ctx.fill();
+  }
+  ctx.fillStyle = "#FFFFFF"; rr(ctx, 36, 36, W-72, H-72, 44); ctx.fill();
+  ctx.save(); rr(ctx, 36, 36, W-72, H-72, 44); ctx.clip();
+  ctx.fillStyle = "#5A8F06"; ctx.fillRect(36, 36, W-72, 16);
+  ctx.fillStyle = "#DCEF9A";
+  for(var sx=36; sx<W-36; sx+=112) ctx.fillRect(sx+56, 36, 56, 16);
+  ctx.restore();
+  ctx.textBaseline = "middle";
+  ctx.font = "800 34px " + FONT;
+  var pillTxt = "16 型健身人格测试";
+  var pw = ctx.measureText(pillTxt).width + 92, px = (W-pw)/2;
+  ctx.fillStyle = "#DCEF9A"; rr(ctx, px, 86, pw, 58, 29); ctx.fill();
+  ctx.fillStyle = "#E85D1A"; ctx.beginPath(); ctx.arc(px+34, 115, 7, 0, 6.2832); ctx.fill();
+  ctx.fillStyle = "#2E3D08"; ctx.textAlign = "left";
+  ctx.fillText(pillTxt, px+52, 117);
+  var img = new Image();
+  img.onload = function(){
+    ctx.drawImage(img, 240, 168, 600, 600);
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#171A15";
+    ctx.font = "900 102px " + FONT;
+    ctx.fillText(t.name, W/2, 862);
+    var codeTxt = code.split("").join(" ");
+    ctx.font = "900 44px " + FONT;
+    var cw = ctx.measureText(codeTxt).width + 52;
+    ctx.fillStyle = "#EEF1E4"; rr(ctx, (W-cw)/2, 936, cw, 64, 16); ctx.fill();
+    ctx.fillStyle = "#5A8F06";
+    ctx.fillText(codeTxt, W/2, 970);
+    ctx.font = "800 45px " + FONT;
+    ctx.fillStyle = "#E85D1A";
+    ctx.fillText(t.tag, W/2, 1064);
+    ctx.strokeStyle = "#DEE2D2"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(140, 1120); ctx.lineTo(W-140, 1120); ctx.stroke();
+    ctx.fillStyle = "#171A15";
+    ctx.font = "900 46px " + FONT;
+    ctx.fillText("复制链接来测测你是哪种健身人格", W/2, 1200);
+    var urlTxt = "2m4tggtndb-del.github.io/fitness-personality-test/";
+    var urlSize = 38;
+    ctx.font = "700 " + urlSize + "px " + FONT;
+    while(ctx.measureText(urlTxt).width > 880 && urlSize > 24){
+      urlSize -= 2;
+      ctx.font = "700 " + urlSize + "px " + FONT;
+    }
+    var uw = ctx.measureText(urlTxt).width + 64;
+    ctx.fillStyle = "#EEF1E4"; rr(ctx, (W-uw)/2, 1252, uw, 80, 20); ctx.fill();
+    ctx.fillStyle = "#2E3D08";
+    ctx.fillText(urlTxt, W/2, 1294);
+    finishSave(cv, code);
+  };
+  img.onerror = function(){ el("save-tip").textContent = "生成图片失败，再点一次试试"; };
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(charSVG(code, 720));
+}
+
 var idx = 0;
 var answers = []; // 每题存选项下标 0-3（A-D）
 
@@ -406,6 +686,15 @@ function finish(){
     return '<div class="tcell'+(k===code?" me":"")+'"><div class="c">'+k+'</div><div class="n">'+TYPES[k].name+'</div></div>';
   }).join("");
 
+  currentCode = code;
+  currentType = t;
+  el("sc-char").innerHTML = charSVG(code);
+  el("sc-name").textContent = t.name;
+  el("sc-code").textContent = code;
+  el("sc-tag").textContent = t.tag;
+  el("poster-preview").classList.add("hidden");
+  el("save-tip").textContent = "把卡片存成图片，发朋友圈或小红书给朋友测一测";
+
   el("copy-tip").textContent = "";
   el("btn-copy").setAttribute("data-text",
     "我的健身人格是 " + code + "「" + t.name + "」——" + t.tag + "。适合我： " + t.sports.join("、") + "。你也来测测你是哪种健身人格！");
@@ -419,6 +708,7 @@ OPT_IDS.forEach(function(k, i){
 el("btn-back").addEventListener("click", function(){ if(idx>0){ idx--; renderQ(); } });
 el("btn-quit").addEventListener("click", function(){ idx=0; answers=[]; show("start"); });
 el("btn-again").addEventListener("click", function(){ idx=0; answers=[]; show("quiz"); renderQ(); });
+el("btn-save").addEventListener("click", savePoster);
 el("btn-copy").addEventListener("click", function(){
   var text = el("btn-copy").getAttribute("data-text") || "";
   function done(){ el("copy-tip").textContent = "已复制，去分享给朋友吧 ✓"; }
