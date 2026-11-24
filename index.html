@@ -666,7 +666,7 @@ function finish(){
   el("r-pdesc").textContent = partner.tag + (gender==="F" ? "——你们正好互补，她带你冲、你陪她稳，姐妹组队最不容易半途而废。" : "——你们的风格正好互补，一个负责带动，一个负责沉稳，组队最不容易半途而废。");
 
   el("r-all").innerHTML = Object.keys(curT).map(function(k){
-    return '<div class="tcell'+(k===code?" me":"")+'"><div class="c">'+k+'</div><div class="n">'+TYPES[k].name+'</div></div>';
+    return '<div class="tcell'+(k===code?" me":"")+'"><div class="c">'+k+'</div><div class="n">'+curT[k].name+'</div></div>';
   }).join("");
 
   currentCode = code;
