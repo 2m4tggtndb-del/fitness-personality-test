@@ -6,8 +6,6 @@
 <meta name="color-scheme" content="light dark" />
 <link rel="icon" href="data:," />
 <title>健身人格测试</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Archivo:wght@800;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#F4F5EF; --surface:#FFFFFF; --surface2:#EEF1E4; --ink:#171A15; --muted:#5C6558;
@@ -25,7 +23,7 @@
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
-    font-family:"Noto Sans SC",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
     background:var(--bg); color:var(--ink); line-height:1.6;
     background-image:radial-gradient(var(--line) 1px, transparent 1px); background-size:22px 22px;
   }
@@ -44,7 +42,7 @@
   .dim{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
   .dim b{font-size:15px}
   .dim span{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
-  .dim .letters{font-family:Archivo,sans-serif;font-weight:900;color:var(--accent);letter-spacing:.08em}
+  .dim .letters{font-weight:900;color:var(--accent);letter-spacing:.08em}
   .cta{
     width:100%;border:0;border-radius:14px;background:var(--accent);color:var(--accent-ink);
     font-size:18px;font-weight:900;padding:16px 20px;margin-top:8px;
@@ -56,7 +54,7 @@
   .ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   @media(max-width:520px){.ex-grid{grid-template-columns:1fr}}
   .ex{background:var(--surface2);border-radius:14px;padding:13px 15px}
-  .ex .code{font-family:Archivo,sans-serif;font-weight:900;letter-spacing:.1em;font-size:13px;color:var(--coral)}
+  .ex .code{font-weight:900;letter-spacing:.1em;font-size:13px;color:var(--coral)}
   .ex b{display:block;font-size:15px}
   .ex span{color:var(--muted);font-size:13px}
 
@@ -76,7 +74,7 @@
   .opt:hover{border-color:var(--accent)}
   .opt .ab{
     flex:0 0 auto;width:32px;height:32px;border-radius:50%;background:var(--surface2);
-    display:flex;align-items:center;justify-content:center;font-family:Archivo,sans-serif;font-weight:900;font-size:14px;margin-top:1px;
+    display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;margin-top:1px;
   }
   .opt.picked{border-color:var(--accent);background:var(--surface2)}
   .qnav{display:flex;gap:10px;margin-top:16px}
@@ -87,14 +85,14 @@
   .rcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px 22px;overflow:hidden;position:relative}
   .rcard::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:repeating-linear-gradient(-45deg,var(--accent) 0 14px,var(--volt) 14px 28px)}
   .rlabel{color:var(--muted);font-size:14px;font-weight:700;margin-top:6px}
-  .rcode{font-family:Archivo,sans-serif;font-size:56px;font-weight:900;letter-spacing:.06em;line-height:1;margin:8px 0 2px}
+  .rcode{font-size:56px;font-weight:900;letter-spacing:.06em;line-height:1;margin:8px 0 2px}
   @media(max-width:520px){.rcode{font-size:44px}}
   .rname{font-size:26px;font-weight:900;margin:0}
   .rtag{color:var(--coral);font-weight:800;font-size:15.5px;margin:4px 0 0}
   .rdesc{color:var(--ink);font-size:15.5px;margin:14px 0 0}
   .letters-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
   .lchip{background:var(--surface2);border-radius:10px;padding:8px 11px;font-size:13px}
-  .lchip b{font-family:Archivo,sans-serif;margin-right:5px;color:var(--accent)}
+  .lchip b{margin-right:5px;color:var(--accent)}
   section.block{margin-top:26px}
   section.block h2{font-size:17px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
   section.block h2::after{content:"";flex:1;height:1px;background:var(--line)}
@@ -117,7 +115,7 @@
   .plan div:last-child{border-bottom:0}
   .plan b{flex:0 0 52px;color:var(--accent)}
   .partner{background:var(--volt);color:var(--volt-ink);border-radius:14px;padding:16px}
-  .partner .code{font-family:Archivo,sans-serif;font-weight:900;letter-spacing:.08em}
+  .partner .code{font-weight:900;letter-spacing:.08em}
   .partner p{margin:4px 0 0;font-size:14.5px}
   .actions{display:grid;gap:10px;margin-top:22px}
   .secondary{width:100%;border:2px solid var(--accent);background:transparent;color:var(--ink);border-radius:14px;font-size:16px;font-weight:800;padding:13px}
@@ -125,7 +123,7 @@
   .alltypes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
   @media(max-width:520px){.alltypes{grid-template-columns:repeat(2,1fr)}}
   .tcell{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
-  .tcell .c{font-family:Archivo,sans-serif;font-weight:900;font-size:12.5px;letter-spacing:.06em;color:var(--muted)}
+  .tcell .c{font-weight:900;font-size:12.5px;letter-spacing:.06em;color:var(--muted)}
   .tcell .n{font-size:13.5px;font-weight:700}
   .tcell.me{border-color:var(--accent);background:var(--surface2)}
   .tcell.me .c{color:var(--coral)}
@@ -139,7 +137,7 @@
   <div id="view-start">
     <span class="badge"><i></i> 16 型健身人格测试</span>
     <h1>你是哪种<br><span class="hl">健身人格？</span></h1>
-    <p class="lead">像 MBTI 一样，回答 16 道二选一的问题，从四个维度测出你的健身人格类型——你靠什么坚持、适合练什么、又容易在哪一步放弃，全都测得出来。</p>
+    <p class="lead">像 MBTI 一样，回答 20 道四选一的问题，从四个维度测出你的健身人格类型——你靠什么坚持、适合练什么、又容易在哪一步放弃，全都测得出来。</p>
 
     <div class="dims">
       <div class="dim"><span class="letters">E / I</span><b>能量来源</b><span>E 群练派，越热闹越有劲 · I 独练派，一个人更专注</span></div>
@@ -149,7 +147,7 @@
     </div>
 
     <button class="cta" id="btn-start">开始测试 →</button>
-    <p class="meta">共 16 题 · 约 2 分钟 · 没有对错，选第一反应就好</p>
+    <p class="meta">共 20 题 · 约 3 分钟 · 没有对错，选最像你的就好</p>
 
     <div class="examples">
       <h2>先偷看几个类型</h2>
@@ -164,7 +162,7 @@
 
   <!-- QUIZ -->
   <div id="view-quiz" class="hidden">
-    <div class="qtop"><span id="q-count">第 1 / 16 题</span><span id="q-pct">0%</span></div>
+    <div class="qtop"><span id="q-count">第 1 / 20 题</span><span id="q-pct">0%</span></div>
     <div class="progress"><i id="q-bar"></i></div>
     <div class="qcard">
       <div class="qdim" id="q-dim"></div>
@@ -172,6 +170,8 @@
       <div class="opts">
         <button class="opt" id="opt-a"><span class="ab">A</span><span id="opt-a-text"></span></button>
         <button class="opt" id="opt-b"><span class="ab">B</span><span id="opt-b-text"></span></button>
+        <button class="opt" id="opt-c"><span class="ab">C</span><span id="opt-c-text"></span></button>
+        <button class="opt" id="opt-d"><span class="ab">D</span><span id="opt-d-text"></span></button>
       </div>
     </div>
     <div class="qnav">
@@ -235,27 +235,32 @@
 </div>
 
 <script>
+// 每题 4 个选项为程度梯度：A=倾向第一极 2 分，B=倾向第一极 1 分，C=倾向第二极 1 分，D=倾向第二极 2 分
 var QUESTIONS = [
-  // E / I
-  {dim:"能量来源", pair:"EI", q:"走进健身房，你更喜欢哪种氛围？", a:{t:"热闹一点，有人一起练更有劲", v:"E"}, b:{t:"安静一点，戴上耳机专注练自己的", v:"I"}},
-  {dim:"能量来源", pair:"EI", q:"朋友约你周末去爬山或骑行，你的第一反应是？", a:{t:"立刻答应，人多才好玩", v:"E"}, b:{t:"更想自己去，节奏自己说了算", v:"I"}},
-  {dim:"能量来源", pair:"EI", q:"练完一组动作，休息的间隙你通常会？", a:{t:"跟旁边的人聊两句，互相打气", v:"E"}, b:{t:"放空或刷会儿手机，沉浸在自己的世界", v:"I"}},
-  {dim:"能量来源", pair:"EI", q:"哪种安排你更容易长期坚持？", a:{t:"固定跟搭子约练，或跟着团课走", v:"E"}, b:{t:"自己定时间，想练就练，不用等任何人", v:"I"}},
-  // P / C
-  {dim:"训练偏好", pair:"PC", q:"只能选一样练满一小时，你选哪个？", a:{t:"撸铁：深蹲、硬拉，重量往上加", v:"P"}, b:{t:"跑步、骑行或游泳，出透一身汗", v:"C"}},
-  {dim:"训练偏好", pair:"PC", q:"哪种进步最让你有成就感？", a:{t:"卧推重量又涨了 5 公斤", v:"P"}, b:{t:"5 公里配速又快了 30 秒", v:"C"}},
-  {dim:"训练偏好", pair:"PC", q:"你更向往哪种状态？", a:{t:"肌肉线条分明，看起来很有力量感", v:"P"}, b:{t:"轻盈耐造，跑个半马也不带喘的", v:"C"}},
-  {dim:"训练偏好", pair:"PC", q:"休息时刷到健身视频，你更会点开哪种？", a:{t:"大重量训练、增肌教程", v:"P"}, b:{t:"跑步技巧、骑行和户外 vlog", v:"C"}},
-  // R / F
-  {dim:"行动风格", pair:"RF", q:"对于训练计划，你的态度是？", a:{t:"必须有计划表，照着打卡才安心", v:"R"}, b:{t:"计划只是参考，当天想练啥练啥", v:"F"}},
-  {dim:"行动风格", pair:"RF", q:"出差或旅游打乱了训练安排，你会？", a:{t:"想办法补回来，少练一次浑身难受", v:"R"}, b:{t:"正好休息一下，回来再说", v:"F"}},
-  {dim:"行动风格", pair:"RF", q:"你更喜欢哪一类课程或活动？", a:{t:"固定课表、动作编排好的课", v:"R"}, b:{t:"户外探索型的，每次都不一样", v:"F"}},
-  {dim:"行动风格", pair:"RF", q:"买运动装备时，你更像哪种人？", a:{t:"先列清单做功课，按需要买", v:"R"}, b:{t:"看到好玩的新装备就想试试", v:"F"}},
-  // B / H
-  {dim:"核心目标", pair:"BH", q:"你开始健身，最主要的原因是？", a:{t:"想改变身材，穿衣服更好看", v:"B"}, b:{t:"想更健康，睡得好、精力足、少生病", v:"H"}},
-  {dim:"核心目标", pair:"BH", q:"哪句话更能激励你坚持下去？", a:{t:"「镜子里的自己越来越好看了」", v:"B"}, b:{t:"「最近明显感觉精力变好了」", v:"H"}},
-  {dim:"核心目标", pair:"BH", q:"如果效果只能选一个，你选？", a:{t:"体脂下降，线条和马甲线出来", v:"B"}, b:{t:"体检指标变好，身体没毛病", v:"H"}},
-  {dim:"核心目标", pair:"BH", q:"练了三个月，外形没啥变化，但你明显更有劲儿了，你会？", a:{t:"有点失落，外形没变，动力会打折", v:"B"}, b:{t:"很满意，这正是我想要的效果", v:"H"}}
+  // 能量来源 E / I
+  {dim:"能量来源", pair:"EI", q:"理想中的训练环境是？", opts:["人多热闹，大家互相带动","有几个熟面孔，偶尔聊两句","人不多，安静有序","一个人戴耳机，谁也不理"]},
+  {dim:"能量来源", pair:"EI", q:"去练之前你会？", opts:["约上朋友一起去","在群里问问谁去","自己决定去不去","从来都是一个人"]},
+  {dim:"能量来源", pair:"EI", q:"训练时有人搭话，你会？", opts:["很开心，聊起来","简单聊两句","礼貌回应，继续练","希望别打扰我"]},
+  {dim:"能量来源", pair:"EI", q:"什么最能让你坚持去练？", opts:["和朋友互相监督","教练或搭子带着","自己的计划和打卡","一个人跟自己较劲"]},
+  {dim:"能量来源", pair:"EI", q:"办卡你更倾向？", opts:["团课多的大型健身房","有私教和团课的工作室","器械齐的小健身房","家里或户外自己练"]},
+  // 训练偏好 P / C
+  {dim:"训练偏好", pair:"PC", q:"练完之后，哪种感觉最爽？", opts:["举起更大重量的成就感","肌肉充血的泵感","跑完一身汗的畅快","心率拉满后的轻盈"]},
+  {dim:"训练偏好", pair:"PC", q:"自由活动一小时，你选？", opts:["深蹲硬拉","器械循环练全身","跑步机或单车刷有氧","户外跑步骑行"]},
+  {dim:"训练偏好", pair:"PC", q:"看到自己的进步，你更在意？", opts:["力量数据涨了","围度和线条变好看了","体脂降了","耐力变强，爬楼不喘了"]},
+  {dim:"训练偏好", pair:"PC", q:"休息日你会？", opts:["加练一次力量","做拉伸和核心","慢跑 30 分钟","游泳打球"]},
+  {dim:"训练偏好", pair:"PC", q:"买运动装备时你先看？", opts:["护具、腰带、举重鞋","训练服、运动手套","跑鞋、心率表","运动耳机、水壶"]},
+  // 行动风格 R / F
+  {dim:"行动风格", pair:"RF", q:"去健身房之前，你会？", opts:["按计划表，练什么都定好了","大概想好练哪个部位","到了看心情","完全随性"]},
+  {dim:"行动风格", pair:"RF", q:"遇到平台期没进步，你会？", opts:["查资料调整计划","换个训练动作试试","先休息几天再说","换种运动玩玩"]},
+  {dim:"行动风格", pair:"RF", q:"没时间去健身房的时候？", opts:["在家按简化版计划练","做几个徒手动作","改天再去","干脆休息"]},
+  {dim:"行动风格", pair:"RF", q:"练到一半很累的时候？", opts:["咬牙做完计划的组数","减点重量继续","提前结束","直接去拉伸走人"]},
+  {dim:"行动风格", pair:"RF", q:"对于打卡记录，你是？", opts:["每次都记，数据说话","偶尔记一下","凭感觉，不记","记了也坚持不了几天"]},
+  // 核心目标 B / H
+  {dim:"核心目标", pair:"BH", q:"你开始健身最初的原因是？", opts:["想练出好身材","想变壮或变瘦，改变体型","想改善体态和精神状态","医生或体检说该动了"]},
+  {dim:"核心目标", pair:"BH", q:"最让你有成就感的是？", opts:["照镜子看到线条","衣服尺码变了","精力变好，睡得香","体检指标变好了"]},
+  {dim:"核心目标", pair:"BH", q:"饮食方面你会？", opts:["严格算蛋白和热量","大概控制，少油少糖","正常吃，多吃点好的","怎么开心怎么吃"]},
+  {dim:"核心目标", pair:"BH", q:"如果只能选一个，你希望一年后？", opts:["拥有理想身材","体脂降到目标","养成运动习惯","身体更健康少生病"]},
+  {dim:"核心目标", pair:"BH", q:"朋友问你健身图什么，你会说？", opts:["身材就是名片","变好看了自信多了","出汗解压，生活更规律","健康才是本钱"]}
 ];
 
 var TYPES = {
@@ -314,9 +319,10 @@ var TRAITS = {
 };
 
 var idx = 0;
-var answers = [];
+var answers = []; // 每题存选项下标 0-3（A-D）
 
 var el = function(id){ return document.getElementById(id); };
+var OPT_IDS = ["a","b","c","d"];
 
 function show(view){
   el("view-start").classList.toggle("hidden", view!=="start");
@@ -333,15 +339,15 @@ function renderQ(){
   el("q-bar").style.width = pct + "%";
   el("q-dim").textContent = q.dim;
   el("q-text").textContent = q.q;
-  el("opt-a-text").textContent = q.a.t;
-  el("opt-b-text").textContent = q.b.t;
-  el("opt-a").classList.toggle("picked", answers[idx]===q.a.v);
-  el("opt-b").classList.toggle("picked", answers[idx]===q.b.v);
+  OPT_IDS.forEach(function(k, i){
+    el("opt-" + k + "-text").textContent = q.opts[i];
+    el("opt-" + k).classList.toggle("picked", answers[idx]===i);
+  });
   el("btn-back").disabled = idx===0;
 }
 
-function pick(v){
-  answers[idx] = v;
+function pick(i){
+  answers[idx] = i;
   renderQ();
   setTimeout(function(){
     if(idx < QUESTIONS.length-1){ idx++; renderQ(); }
@@ -350,9 +356,16 @@ function pick(v){
 }
 
 function finish(){
-  var counts = {E:0,I:0,P:0,C:0,R:0,F:0,B:0,H:0};
-  answers.forEach(function(v){ counts[v]++; });
-  var code = PAIRS.map(function(p){ return counts[p[0]]>=counts[p[1]] ? p[0] : p[1]; }).join("");
+  var scores = {E:0,I:0,P:0,C:0,R:0,F:0,B:0,H:0};
+  QUESTIONS.forEach(function(q, qi){
+    var a = answers[qi];
+    var first = q.pair.charAt(0), second = q.pair.charAt(1);
+    if(a===0){ scores[first] += 2; }
+    else if(a===1){ scores[first] += 1; }
+    else if(a===2){ scores[second] += 1; }
+    else { scores[second] += 2; }
+  });
+  var code = PAIRS.map(function(p){ return scores[p[0]]>=scores[p[1]] ? p[0] : p[1]; }).join("");
   var t = TYPES[code];
   el("r-code").textContent = code;
   el("r-name").textContent = t.name;
@@ -364,8 +377,8 @@ function finish(){
   }).join("");
 
   el("r-bars").innerHTML = PAIRS.map(function(p,i){
-    var total = counts[p[0]]+counts[p[1]] || 1;
-    var leftPct = Math.round(counts[p[0]]/total*100);
+    var total = scores[p[0]]+scores[p[1]] || 1;
+    var leftPct = Math.round(scores[p[0]]/total*100);
     return '<div class="bar-row"><div class="bar-head"><span>'+p[0]+' '+DIM_INFO[p[0]].label+' '+leftPct+'%</span><span>'+PAIR_NAMES[i]+'</span><span>'+(100-leftPct)+'% '+DIM_INFO[p[1]].label+' '+p[1]+'</span></div>'
       + '<div class="bar"><i style="width:'+leftPct+'%"></i><em style="width:'+(100-leftPct)+'%"></em></div></div>';
   }).join("");
@@ -400,8 +413,9 @@ function finish(){
 }
 
 el("btn-start").addEventListener("click", function(){ idx=0; answers=[]; show("quiz"); renderQ(); });
-el("opt-a").addEventListener("click", function(){ pick(QUESTIONS[idx].a.v); });
-el("opt-b").addEventListener("click", function(){ pick(QUESTIONS[idx].b.v); });
+OPT_IDS.forEach(function(k, i){
+  el("opt-" + k).addEventListener("click", function(){ pick(i); });
+});
 el("btn-back").addEventListener("click", function(){ if(idx>0){ idx--; renderQ(); } });
 el("btn-quit").addEventListener("click", function(){ idx=0; answers=[]; show("start"); });
 el("btn-again").addEventListener("click", function(){ idx=0; answers=[]; show("quiz"); renderQ(); });
